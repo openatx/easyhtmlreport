@@ -1,7 +1,5 @@
-# easyhtmlreport
-make a easy htmlreport 
-
-# HTMLReport for uiautomator2
+# EasyHTMLReport
+for uiautomator2
 
 Demo code
 
@@ -9,7 +7,7 @@ Demo code
 # coding: utf-8
 
 import uiautomator2 as u2
-import uiautomator2.ext.htmlreport as htmlreport
+import easyhtmlreport as htmlreport
 
 
 u = u2.connect()
@@ -21,6 +19,13 @@ hrp.patch_click()
 u.click(0.4, 0.6)
 u.click(0.4, 0.5)
 u(text="Github").click() # will also record
+```
+
+## How to add into requirements.txt
+Put the following content into `requirements.txt`
+
+```
+git+https://github.com/openatx/easyhtmlreport
 ```
 
 ## Screenshot
