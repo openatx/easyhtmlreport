@@ -15,20 +15,33 @@ import uiautomator2
 from PIL import ImageDraw
 
 
-def mark_point(im, x, y):
+def mark_point(im, *args):
     """
     Mark position to show which point clicked
     Args:
         im: pillow.Image
     """
+    x = args[0]
+    y = args[1]
+    tx = None
+    ty = None
+    if len(args) > 2:
+        tx = args[2]
+        ty = args[3]
     draw = ImageDraw.Draw(im)
-    w, h = im.size
-    draw.line((x, 0, x, h), fill='red', width=5)
-    draw.line((0, y, w, y), fill='red', width=5)
+    if not tx:
+        w, h = im.size
+        draw.line((x, 0, x, h), fill='red', width=5)
+        draw.line((0, y, w, y), fill='red', width=5)
     r = min(im.size) // 40
     draw.ellipse((x - r, y - r, x + r, y + r), fill='red')
     r = min(im.size) // 50
     draw.ellipse((x - r, y - r, x + r, y + r), fill='white')
+
+    if tx:
+        r = min(im.size) // 60
+        draw.line((x, y, tx, ty), fill='red', width=5)
+        draw.ellipse((tx - r, ty - r, tx + r, ty + r), fill='red')
     del draw
     return im
 
@@ -65,8 +78,12 @@ class HTMLReport(object):
         """
         im = self._driver.screenshot()
         if pos:
-            x, y = pos
-            im = mark_point(im, x, y)
+            if len(pos) == 2:
+                x, y = pos
+                im = mark_point(im, x, y)
+            else:
+                fx, fy, tx, ty = pos
+                im = mark_point(im, fx, fy, tx, ty)
             im.thumbnail((800, 800))
         relpath = os.path.join('imgs', 'img-%d.jpg' % (time.time() * 1000))
         abspath = os.path.join(self._target_dir, relpath)
@@ -157,9 +174,17 @@ class HTMLReport(object):
             self._record_screenshot((x, y))  # write image and record.json
             return obj.long_click.oldfunc(obj, x, y, duration)
 
+        def _mock_swipe(obj, fx, fy, tx, ty, duration=0.5):
+            x0, y0 = obj.pos_rel2abs(fx, fy)
+            x1, y1 = obj.pos_rel2abs(tx, ty)
+            self._record_screenshot((x0, y0, x1, y1))  # write image and record.json
+            return obj.swipe.oldfunc(obj, fx, fy, tx, ty, duration)
+
         self._patch_class_func(uiautomator2.Session, 'click', _mock_click)
         self._patch_class_func(uiautomator2.Session, 'long_click',
                                _mock_long_click)
+        self._patch_class_func(uiautomator2.Session, 'swipe',
+                               _mock_swipe)
 
     def unpatch_click(self):
         """
