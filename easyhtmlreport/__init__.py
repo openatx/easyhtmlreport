@@ -15,33 +15,39 @@ import uiautomator2
 from PIL import ImageDraw
 
 
-def mark_point(im, *args):
+def mark_point(im, x, y):
     """
     Mark position to show which point clicked
     Args:
         im: pillow.Image
     """
-    x = args[0]
-    y = args[1]
-    tx = None
-    ty = None
-    if len(args) > 2:
-        tx = args[2]
-        ty = args[3]
     draw = ImageDraw.Draw(im)
-    if not tx:
-        w, h = im.size
-        draw.line((x, 0, x, h), fill='red', width=5)
-        draw.line((0, y, w, y), fill='red', width=5)
+    w, h = im.size
+    draw.line((x, 0, x, h), fill='red', width=5)
+    draw.line((0, y, w, y), fill='red', width=5)
     r = min(im.size) // 40
     draw.ellipse((x - r, y - r, x + r, y + r), fill='red')
     r = min(im.size) // 50
     draw.ellipse((x - r, y - r, x + r, y + r), fill='white')
+    del draw
+    return im
 
-    if tx:
-        r = min(im.size) // 60
-        draw.line((x, y, tx, ty), fill='red', width=5)
-        draw.ellipse((tx - r, ty - r, tx + r, ty + r), fill='red')
+
+def mark_swipe(im, fx, fy, tx, ty):
+    """
+        Mark position to show swipe action
+        Args:
+            im: pillow.Image
+        """
+    draw = ImageDraw.Draw(im)
+    r = min(im.size) // 40
+    draw.ellipse((fx - r, fy - r, fx + r, fy + r), fill='red')
+    r = min(im.size) // 50
+    draw.ellipse((fx - r, fy - r, fx + r, fy + r), fill='white')
+
+    r = min(im.size) // 60
+    draw.line((fx, fy, tx, ty), fill='red', width=5)
+    draw.ellipse((tx - r, ty - r, tx + r, ty + r), fill='red')
     del draw
     return im
 
@@ -83,7 +89,7 @@ class HTMLReport(object):
                 im = mark_point(im, x, y)
             else:
                 fx, fy, tx, ty = pos
-                im = mark_point(im, fx, fy, tx, ty)
+                im = mark_swipe(im, fx, fy, tx, ty)
             im.thumbnail((800, 800))
         relpath = os.path.join('imgs', 'img-%d.jpg' % (time.time() * 1000))
         abspath = os.path.join(self._target_dir, relpath)
