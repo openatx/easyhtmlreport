@@ -10,6 +10,7 @@
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css">
+  <link type="text/css" rel="stylesheet" href="css/jquery-image-player-min.css" />
   <!-- 
   <link rel="stylesheet" href="http://gohttp.nie.netease.com/qard-libs/libs/bootstrap/3.3.5/css/bootstrap.min.css">
   <link rel="stylesheet" href="http://gohttp.nie.netease.com/qard-libs/libs/fancybox/2.1.5/jquery.fancybox.min.css">
@@ -23,12 +24,11 @@
     .img-screenshot {
       max-height: 400px;
     }
-
     button {
-      display: table;
-      width: auto;
-      margin-left: auto;
-      margin-right: auto;
+        display: table,
+        width: auto
+        margin-left: auto
+        margin-right: auto
     }
   </style>
 </head>
@@ -48,9 +48,7 @@
       </div>
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
-          <li>
-            <a class="navbar-brand" href="./log.txt">游戏log</a>
-          </li>
+          <li><a class="navbar-brand" href="./log.txt">游戏log</a></li>
           <!-- <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
               列表 <span class="caret"></span>
@@ -69,14 +67,22 @@
     <div style="display: inline-block;">
       <video src="video.mp4" id="video" controls="controls" style="clear:both;display:block;margin:auto"></video>
       <div class="btn-group" style="float: right;">
-        <button onclick="setPlaySpeed(1)" type="button" class="btn btn-default">1倍速</button>
+        <button onclick="setPlaySpeed(1)" type="button" class="btn btn-default" >1倍速</button>
         <button onclick="setPlaySpeed(2)" type="button" class="btn btn-default">2倍速</button>
         <button onclick="setPlaySpeed(3)" type="button" class="btn btn-default">3倍速</button>
         <button onclick="setPlaySpeed(4)" type="button" class="btn btn-default">4倍速</button>
       </div>
     </div>
   </div>
+
   <div class="container-fluid" id="app">
+    <div id="uipg-video-player">
+        <ul>
+            <li data-duration="600" v-for="v, index in steps">
+                <img :src="v.screenshot">
+            </li>
+        </ul>
+    </div>
     <div class="row">
       <div v-if="warning" class="alert alert-warning alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -113,6 +119,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/vue/2.3.2/vue.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jquery-image-player-min.js"></script>
 <!-- <script src="//cdn.rawgit.com/notifyjs/notifyjs/master/dist/notify.js"></script> -->
 <script>
   $.getJSON("record.json")
@@ -126,7 +135,8 @@
       new Vue({
         el: '#app',
         data: ret,
-        computed: {}
+        computed: {},
+        mounted: function(){this.$nextTick(function(){$("#uipg-video-player").jsVideoPlayer({showTitle: false,playerHeight:450})})}
       })
     }, function (ret) {
       // Test data
@@ -144,12 +154,11 @@
           }]
         }
       })
-    })
-
-  var video = document.getElementById("video");
-  function setPlaySpeed(speed) {
-    video.playbackRate = speed;
-  }
+    });
+    var video = document.getElementById("video");
+    function setPlaySpeed(speed){
+        video.playbackRate=speed;
+    }
 </script>
 
 </html>
