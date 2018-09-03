@@ -64,9 +64,11 @@ class HTMLReport(object):
         # py3 can use os.makedirs(dst, exist_ok=True), but py2 cannot
         if not os.path.exists(self._target_dir):
             os.makedirs(self._target_dir)
+            os.makedirs(os.path.join(self._target_dir, 'css'))
+            os.makedirs(os.path.join(self._target_dir, 'js'))
 
         sdir = os.path.dirname(os.path.abspath(__file__))
-        for file in ['index.html', 'simplehttpserver.py', 'start.bat']:
+        for file in ['index.html', 'simplehttpserver.py', 'start.bat', 'css/jquery-image-player-min.css', 'js/jquery-1.10.2.min.js', 'js/jquery-ui.min.js', 'js/jquery-image-player-min.js']:
             src = os.path.join(sdir, 'assets', file)
             dst = os.path.join(self._target_dir, file)
             shutil.copyfile(src, dst)
