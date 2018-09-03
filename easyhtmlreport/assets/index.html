@@ -136,7 +136,7 @@
         el: '#app',
         data: ret,
         computed: {},
-        mounted: function(){this.$nextTick(function(){$("#uipg-video-player").jsVideoPlayer()})}
+        mounted: function(){this.$nextTick(function(){$("#uipg-video-player").jsVideoPlayer({showTitle: false,playerHeight:450})})}
       })
     }, function (ret) {
       // Test data
