@@ -6,7 +6,7 @@
 .jsvp-wrapper{border-radius:4px; -webkit-border-radius:4px; -moz-border-radius:4px;}
 
 .jsvp-wrapper{width:900px; height:385px; display:block; margin:30px auto; overflow: hidden;}
-.jsvp-control-bar{ width:900px; height:42px; display:block; float: left; background:url(../images/player-icons-bg.png) repeat-x 0 0;}
+.jsvp-control-bar{ width:900px; height:42px; display:block; float: left; background:url(../css/player-icons-bg.png) repeat-x 0 0;}
 
 .jsvp-wrapper .jsvp-ul{background:#d3d3d3}
 .jsvp-wrapper .jsvp-ul, .jsvp-wrapper .jsvp-ul li{width:750px; }
@@ -20,13 +20,13 @@
 .jsvp-wrapper .jsvp-ul li .jsvp-title{position:absolute; bottom:0px; left:0; text-align:center; display:block; width:100%; padding:10px 0; background:rgba(0,0,0,0.7); color:#fff; font-size:13px; font-weight:bold;}
 
 .jsvp-control-bar a{width:50px; background-color:#41434f; display:block; float:left; font-weight:bold; font-size:12px; color:#000; text-align:center;}
-.jsvp-control-bar .jsvp-control-play{background:url(../images/player-icons-sprite.png) no-repeat -88px top; width:44px; height:43px; float:left; display:block;}
+.jsvp-control-bar .jsvp-control-play{background:url(../css/player-icons-sprite.png) no-repeat -88px top; width:44px; height:43px; float:left; display:block;}
 .jsvp-control-bar .jsvp-control-play:hover, .jsvp-control-bar .jsvp-control-play.sel{background-position:-88px bottom;}
-.jsvp-control-bar .jsvp-control-pause{background:url(../images/player-icons-sprite.png) no-repeat -44px top; width:44px; height:43px; float:left; display:block;}
+.jsvp-control-bar .jsvp-control-pause{background:url(../css/player-icons-sprite.png) no-repeat -44px top; width:44px; height:43px; float:left; display:block;}
 .jsvp-control-bar .jsvp-control-pause:hover, .jsvp-control-bar .jsvp-control-pause.sel{background-position:-44px bottom}
-.jsvp-control-bar .jsvp-control-title{background:url(../images/player-icons-sprite.png) no-repeat -132px top; width:44px; height:43px; float:left; display:block;}
+.jsvp-control-bar .jsvp-control-title{background:url(../css/player-icons-sprite.png) no-repeat -132px top; width:44px; height:43px; float:left; display:block;}
 .jsvp-control-bar .jsvp-control-title:hover, .jsvp-control-bar .jsvp-control-title.sel{background-position:-132px bottom;}
-.jsvp-control-bar .jsvp-control-volume{background:url(../images/player-icons-sprite.png) no-repeat -176px top; width:44px; height:43px; float:left; display:block;}
+.jsvp-control-bar .jsvp-control-volume{background:url(../css/player-icons-sprite.png) no-repeat -176px top; width:44px; height:43px; float:left; display:block;}
 .jsvp-control-bar .jsvp-control-volume:hover, .jsvp-control-bar .jsvp-control-volume.sel{background-position:-176px bottom;}
 
 .jsvp-control-bar .ui-slider .ui-slider-range{position: absolute;	z-index: 1;}
@@ -45,7 +45,7 @@
 .jsvp-control-volume-bar .ui-slider .ui-slider-handle {position:absolute;	z-index:2; cursor:default; bottom:-6px; margin-left:-6px; margin-bottom: -6px;	} 
 .jsvp-control-volume-bar .ui-slider-vertical .ui-slider-range{bottom: 0; height: 100%;}
 
-.jsvp-control-bar .jsvp-control-player-bar .ui-widget-content .ui-state-default, .jsvp-control-volume-bar .ui-widget-content .ui-state-default{background:url(../images/player-icons-sprite.png) no-repeat -232px -12px; width:20px; height:20px; }
+.jsvp-control-bar .jsvp-control-player-bar .ui-widget-content .ui-state-default, .jsvp-control-volume-bar .ui-widget-content .ui-state-default{background:url(../css/player-icons-sprite.png) no-repeat -232px -12px; width:20px; height:20px; }
 .jsvp-wrapper .jsvp-hidden{position:absolute; top:0; left:0; z-index:99; width:1px; height:1px; z-index:-999; display:block; overflow:hidden;/**/}
 
 .jsvp-hidden .jsvp-audio-player-wrapper{border:1px red solid; position:absolute; top:250px; z-index:999; height:50px;}

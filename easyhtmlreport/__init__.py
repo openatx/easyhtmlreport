@@ -68,7 +68,7 @@ class HTMLReport(object):
             os.makedirs(os.path.join(self._target_dir, 'js'))
 
         sdir = os.path.dirname(os.path.abspath(__file__))
-        for file in ['index.html', 'simplehttpserver.py', 'start.bat', 'css/jquery-image-player-min.css', 'js/jquery-1.10.2.min.js', 'js/jquery-ui.min.js', 'js/jquery-image-player-min.js']:
+        for file in ['index.html', 'simplehttpserver.py', 'start.bat', 'css/jquery-image-player-min.css', 'css/player-icons-bg.png', 'css/player-icons-sprite.png', 'js/jquery-1.10.2.min.js', 'js/jquery-ui.min.js', 'js/jquery-image-player-min.js']:
             src = os.path.join(sdir, 'assets', file)
             dst = os.path.join(self._target_dir, file)
             shutil.copyfile(src, dst)
