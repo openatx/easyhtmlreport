@@ -49,6 +49,7 @@
       <div id="navbar" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
           <li><a class="navbar-brand" href="./log.txt">游戏log</a></li>
+          <li><a class="navbar-brand" href="./perf.csv">性能数据</a></li>
           <!-- <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
               列表 <span class="caret"></span>
@@ -77,11 +78,23 @@
 
   <div class="container-fluid" id="app">
     <div id="uipg-video-player">
-        <ul>
-            <li data-duration="600" v-for="v, index in steps">
-                <img :src="v.screenshot">
-            </li>
-        </ul>
+      <ul>
+        <li data-duration="600" v-for="v, index in steps">
+          <img :src="v.screenshot">
+        </li>
+      </ul>
+    </div>
+    <div class="col-md-6 col-sm-12 col-lg-6">
+      <div id="pss" style="width:800px;height:600px"></div>
+    </div>
+    <div class="col-md-6 col-sm-12 col-lg-6">
+      <div id="cpu" style="width:800px;height:600px"></div>
+    </div>
+    <div class="col-md-6 col-sm-12 col-lg-6">
+      <div id="systemCpu" style="width:800px;height:600px"></div>
+    </div>
+    <div class="col-md-6 col-sm-12 col-lg-6">
+      <div id="Bytes" style="width:800px;height:600px"></div>
     </div>
     <div class="row">
       <div v-if="warning" class="alert alert-warning alert-dismissible" role="alert">
@@ -122,11 +135,13 @@
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jquery-image-player-min.js"></script>
+<script type="text/javascript" src="js/papaparse.min.js"></script>
+<script src="https://cdn.bootcss.com/echarts/4.1.0.rc2/echarts.min.js"></script>
 <!-- <script src="//cdn.rawgit.com/notifyjs/notifyjs/master/dist/notify.js"></script> -->
 <script>
   $.getJSON("record.json")
     .then(function (ret) {
-      console.log(ret)
+      // console.log(ret)
 
       // $(".panel-heading").on('click', function() {
       //   $(this).next().toggle();
@@ -136,8 +151,126 @@
         el: '#app',
         data: ret,
         computed: {},
-        mounted: function(){this.$nextTick(function(){$("#uipg-video-player").jsVideoPlayer({showTitle: false,playerHeight:450})})}
-      })
+        mounted: function(){
+          this.$nextTick(function(){$("#uipg-video-player").jsVideoPlayer({showTitle: false,playerHeight:450});
+          Papa.parse('./perf.csv', {
+            download: true,
+            complete: function(results) {
+              var xAisdata = [];
+              var pss = [];
+              var cpu = [];
+              var systemCpu = [];
+              var rxBytes = [];
+              var txBytes = [];
+              for (var i=1,_l=results.data.length-1;i<_l;i++){
+                xAisdata.push(convertDateFromString(results.data[i][0]))
+                pss.push(results.data[i][1])
+                cpu.push(results.data[i][2])
+                systemCpu.push(results.data[i][3])
+                rxBytes.push(results.data[i][4])
+                txBytes.push(results.data[i][5])
+              }
+              var pss_Chart = echarts.init(document.getElementById('pss'));
+              var option = {
+                title: {
+                  text: "内存"
+              },
+              animation: false,
+              dataZoom: [{
+                type: "slider",
+                xAxisIndex: [0]
+              }],
+              xAxis: {
+                type: 'category',
+                data: xAisdata,
+                name: "时间"
+              },    
+              yAxis:{
+                type: 'value',
+              },
+              series: [{data:pss,
+                type: 'line'}]
+              }
+              pss_Chart.setOption(option, true);
+              var cpu_Chart = echarts.init(document.getElementById('cpu'));
+              var option = {  
+                title: {
+                  text: "cpu"
+                },
+                animation: false,
+                dataZoom: [{
+                type: "slider",
+                  xAxisIndex: [0]
+                }],
+                xAxis: {
+                  type: 'category',
+                  data: xAisdata,
+                  name: "时间"
+                },
+                yAxis:{
+                  type: 'value',
+                },
+                series: [{data:cpu,
+                  type: 'line'}]
+              }
+              cpu_Chart.setOption(option, true);
+              var systemCpu_Chart = echarts.init(document.getElementById('systemCpu'))
+              var option = {
+                title: {
+                text: "systemCpu"
+                },
+                animation: false,
+                dataZoom: [{
+                  type: "slider",
+                  xAxisIndex: [0]
+                }],
+                xAxis: {
+                  type: 'category',
+                  data: xAisdata,
+                  name: "时间"
+                }, 
+                yAxis:{
+                  type: 'value',
+                },
+                series: [{data:systemCpu,
+                  type: 'line'}]
+              }
+              systemCpu_Chart.setOption(option, true);
+              var Bytes_Chart = echarts.init(document.getElementById('Bytes'))
+              var option = {
+                title: {
+                  text: "Bytes"
+                },
+                animation: false,
+                dataZoom: [{
+                  type: "slider",
+                  xAxisIndex: [0]
+                }],
+                legend: {
+                  data: ["rxBytes", "txBytes"]
+                },
+                xAxis: {
+                  type: 'category',
+                  data: xAisdata,
+                  name: "时间"
+                },
+                yAxis:{
+                  type: 'value',
+                },
+                series: [{
+                  data:rxBytes,
+                  name:"rxBytes",
+                  type: 'line'
+                },
+                {
+                  data:txBytes,
+                  name:"txBytes",
+                  type:'line'
+                }]
+              }
+              Bytes_Chart.setOption(option, true);
+            }
+          })})}})
     }, function (ret) {
       // Test data
       new Vue({
@@ -158,7 +291,15 @@
     var video = document.getElementById("video");
     function setPlaySpeed(speed){
         video.playbackRate=speed;
-    }
+    };
+    function convertDateFromString(dateString) { 
+		if (dateString) { 
+			var arr1 = dateString.split(" "); 
+			return arr1[1].split('.')[0];
+		}
+	};
+    
+    
 </script>
 
 </html>
