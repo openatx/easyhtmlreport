@@ -96,6 +96,12 @@
     <div class="col-md-6 col-sm-12 col-lg-6">
       <div id="Bytes" style="width:800px;height:600px"></div>
     </div>
+    <div class="col-md-6 col-sm-12 col-lg-6">
+      <div id="fps" style="width:800px;height:600px"></div>
+    </div>
+    <div class="col-md-6 col-sm-12 col-lg-6">
+      <div style="width:800px;height:600px"></div>
+    </div>
     <div class="row">
       <div v-if="warning" class="alert alert-warning alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -162,13 +168,15 @@
               var systemCpu = [];
               var rxBytes = [];
               var txBytes = [];
+              var fps = [];
               for (var i=1,_l=results.data.length-1;i<_l;i++){
                 xAisdata.push(convertDateFromString(results.data[i][0]))
-                pss.push(results.data[i][1])
-                cpu.push(results.data[i][2])
-                systemCpu.push(results.data[i][3])
-                rxBytes.push(results.data[i][4])
-                txBytes.push(results.data[i][5])
+                pss.push(results.data[i][2])
+                cpu.push(results.data[i][3])
+                systemCpu.push(results.data[i][4])
+                rxBytes.push(results.data[i][5])
+                txBytes.push(results.data[i][6])
+                fps.push(results.data[i][7])
               }
               var pss_Chart = echarts.init(document.getElementById('pss'));
               var option = {
@@ -214,7 +222,7 @@
                   type: 'line'}]
               }
               cpu_Chart.setOption(option, true);
-              var systemCpu_Chart = echarts.init(document.getElementById('systemCpu'))
+              var systemCpu_Chart = echarts.init(document.getElementById('systemCpu'));
               var option = {
                 title: {
                 text: "systemCpu"
@@ -236,7 +244,7 @@
                   type: 'line'}]
               }
               systemCpu_Chart.setOption(option, true);
-              var Bytes_Chart = echarts.init(document.getElementById('Bytes'))
+              var Bytes_Chart = echarts.init(document.getElementById('Bytes'));
               var option = {
                 title: {
                   text: "Bytes"
@@ -269,6 +277,27 @@
                 }]
               }
               Bytes_Chart.setOption(option, true);
+              var fps_Chart = echarts.init(document.getElementById('fps'));
+              var option = {
+                title: {
+                  text: "fps"
+                },
+                animation: false,
+                dataZoom: [{
+                  type: "slider",
+                  xAxisIndex: [0]
+                }],
+                xAxis: {
+                  type: 'category',
+                  data: xAisdata,
+                  name: "时间"
+                },
+                yAxis:{
+                  type: 'value',
+                },
+                series: [{data:fps,type: 'line'}]
+              }
+              fps_Chart.setOption(option, true);
             }
           })})}})
     }, function (ret) {
