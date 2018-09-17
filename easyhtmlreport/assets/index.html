@@ -5,17 +5,11 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <link rel="icon" href="/static/favicon.png?v=2" type="image/x-icon" /> -->
   <title>U2 Report</title>
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/bootstrap/3.3.6/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css">
   <link type="text/css" rel="stylesheet" href="css/jquery-image-player-min.css" />
-  <!-- 
-  <link rel="stylesheet" href="http://gohttp.nie.netease.com/qard-libs/libs/bootstrap/3.3.5/css/bootstrap.min.css">
-  <link rel="stylesheet" href="http://gohttp.nie.netease.com/qard-libs/libs/fancybox/2.1.5/jquery.fancybox.min.css">
-  <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-  -->
   <style>
     body {
       padding-top: 70px;
@@ -84,23 +78,25 @@
         </li>
       </ul>
     </div>
-    <div class="col-md-6 col-sm-12 col-lg-6">
-      <div id="pss" style="width:800px;height:600px"></div>
-    </div>
-    <div class="col-md-6 col-sm-12 col-lg-6">
-      <div id="cpu" style="width:800px;height:600px"></div>
-    </div>
-    <div class="col-md-6 col-sm-12 col-lg-6">
-      <div id="systemCpu" style="width:800px;height:600px"></div>
-    </div>
-    <div class="col-md-6 col-sm-12 col-lg-6">
-      <div id="Bytes" style="width:800px;height:600px"></div>
-    </div>
-    <div class="col-md-6 col-sm-12 col-lg-6">
-      <div id="fps" style="width:800px;height:600px"></div>
-    </div>
-    <div class="col-md-6 col-sm-12 col-lg-6">
-      <div style="width:800px;height:600px"></div>
+    <div id="chart">
+      <div class="col-md-6 col-sm-12 col-lg-6">
+        <div id="pss" style="width:800px;height:450px"></div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-lg-6">
+        <div id="cpu" style="width:800px;height:450px"></div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-lg-6">
+        <div id="systemCpu" style="width:800px;height:450px"></div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-lg-6">
+        <div id="Bytes" style="width:800px;height:450px"></div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-lg-6">
+        <div id="fps" style="width:800px;height:450px"></div>
+      </div>
+      <div class="col-md-6 col-sm-12 col-lg-6">
+        <div style="width:800px;height:450px"></div>
+      </div>
     </div>
     <div class="row">
       <div v-if="warning" class="alert alert-warning alert-dismissible" role="alert">
@@ -133,17 +129,15 @@
     </blockquote>
   </div>
 </body>
-<script src="https://cdn.jsdelivr.net/jquery/1.11.3/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
-<script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/vue/2.3.2/vue.min.js"></script>
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
 <script type="text/javascript" src="js/jquery-image-player-min.js"></script>
 <script type="text/javascript" src="js/papaparse.min.js"></script>
-<script src="https://cdn.bootcss.com/echarts/4.1.0.rc2/echarts.min.js"></script>
-<!-- <script src="//cdn.rawgit.com/notifyjs/notifyjs/master/dist/notify.js"></script> -->
+<script type="text/javascript" src="js/echarts.min.js"></script>
+<script src="https://cdn.jsdelivr.net/mousewheel/3.1.13/jquery.mousewheel.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/vue/2.3.2/vue.min.js"></script>
 <script>
   $.getJSON("record.json")
     .then(function (ret) {
@@ -159,9 +153,11 @@
         computed: {},
         mounted: function(){
           this.$nextTick(function(){$("#uipg-video-player").jsVideoPlayer({showTitle: false,playerHeight:450});
+          $('#chart').hide();
           Papa.parse('./perf.csv', {
             download: true,
             complete: function(results) {
+              $('#chart').show();
               var xAisdata = [];
               var pss = [];
               var cpu = [];
@@ -195,6 +191,7 @@
               },    
               yAxis:{
                 type: 'value',
+                name: 'MB'
               },
               series: [{data:pss,
                 type: 'line'}]
@@ -217,6 +214,7 @@
                 },
                 yAxis:{
                   type: 'value',
+                  name: '%'
                 },
                 series: [{data:cpu,
                   type: 'line'}]
@@ -239,6 +237,7 @@
                 }, 
                 yAxis:{
                   type: 'value',
+                  name: '%'
                 },
                 series: [{data:systemCpu,
                   type: 'line'}]
@@ -264,6 +263,7 @@
                 },
                 yAxis:{
                   type: 'value',
+                  name: 'Bytes'
                 },
                 series: [{
                   data:rxBytes,
@@ -294,6 +294,7 @@
                 },
                 yAxis:{
                   type: 'value',
+                  name: '帧'
                 },
                 series: [{data:fps,type: 'line'}]
               }
