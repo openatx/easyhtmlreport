@@ -24,6 +24,72 @@
         margin-left: auto
         margin-right: auto
     }
+    .page-container {
+        width: 1200px;
+        border: 1px solid #000;
+        margin: 50px auto 0 auto;
+        overflow: hidden;
+    }
+
+    .page-content{
+        margin: 50px 0;
+    }
+
+    /*jqPaginator分页控件样式*/   
+    .hiddenPager {
+        visibility: hidden;
+    }
+
+    .jqPager {
+        position: relative;
+        width: 100%;
+        height: 40px;
+        padding: 25px 0;
+        background-color: #FFF;
+    }
+
+    .jqPager .pagination {
+        float: initial;
+        display: inline-block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .jqPager .pagination li {
+        display: inline-block;
+    }
+
+    .jqPager .pagination li a {
+        padding: 4px 10px;
+    }
+
+    /*跳页--选用功能*/
+    .jumpBox {
+        position: absolute;
+        top: 0;
+        right: 105px;
+    }
+
+    .jumppage {
+        display: block;
+        width: 42px;
+        padding-left: 8px;
+        float: left;
+        height: 34px;
+        outline: none;
+    }
+
+    .jumpbtn {
+        float: left;
+        display: block;
+        height: 34px;
+        line-height: 34px;
+        margin-left: 5px;
+    }
   </style>
 </head>
 
@@ -71,13 +137,13 @@
   </div>
 
   <div class="container-fluid" id="app">
-    <div id="uipg-video-player">
+    <!-- <div id="uipg-video-player">
       <ul>
         <li data-duration="600" v-for="v, index in steps">
           <img :src="v.screenshot">
         </li>
       </ul>
-    </div>
+    </div> -->
     <div id="chart">
       <div class="col-md-6 col-sm-12 col-lg-6">
         <div id="pss" style="width:800px;height:450px"></div>
@@ -106,7 +172,7 @@
         <strong>Warning!</strong> {{warning}}
       </div>
 
-      <div v-for="v, index in steps">
+      <div v-for="v, index in nova">
         <div class="col-md-4">
           <div style="margin-bottom: 20px; padding: 5px; background-color:aliceblue; position: relative">
             <div>
@@ -114,10 +180,18 @@
             <a :href="v.screenshot" data-fancybox="gallery">
               <img style="margin-bottom: 5px" class="img-thumbnail img-screenshot" :src="v.screenshot" style="max-height:200px">
             </a>
-            <pre style="text-overflow: ellipsis; overflow: hidden; font-size: 8px">{{v.code}}</pre>
+            <pre style="text-overflow: ellipsis; overflow: hidden; font-size: 8px;height: 200px;">{{v.code}}</pre>
           </div>
         </div>
       </div>
+    </div>
+    <div class="jqPager" v-bind:class="{hiddenPager:hiddenPager}">
+        <ul id="jqPager" class="pagination cf"></ul>
+        <!--没有跳页功能可以不要下面的jumpBox-->
+        <div class="jumpBox">
+          <input type="number" class="jumppage" id="jumpPageIndex" />
+            <a href="javascript:;" class="jumpbtn" v-on:click="pageSkip()">跳转</a>
+        </div>
     </div>
     <blockquote class="code-font">
       <p>Make mobile test automated, free testers from endless work.</p>
@@ -138,6 +212,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/vue/2.3.2/vue.min.js"></script>
+<script src="jqpaginator.min.js"></script>
 <script>
   $.getJSON("record.json")
     .then(function (ret) {
@@ -147,12 +222,91 @@
       //   $(this).next().toggle();
       // })
       ret.warning = null;
+      var jqPageSize = 90;
+      var backData = ret;
       new Vue({
         el: '#app',
-        data: ret,
+        data: {
+          query: {
+              pageIndex: 1,
+              pageSize: jqPageSize
+          },
+          totaldata: backData.steps,
+          nova: [],
+          hiddenPager: false,
+          totalCount: backData.steps.length
+        },
         computed: {},
+        methods: {
+            //初始化分页,通过更改生成的html结构（给其添加class或者改变返回的DOM）可以手动配置页器的显示效果。
+            initPager: function() {
+              $('#jqPager').jqPaginator({
+                  visiblePages: 1,
+                  currentPage: 1,
+                  totalPages: 1,
+                  first: '<li id="first"><a href="javascript:void(0);">首页</a></li>',
+                  prev: '<li id="prev"><a href="javascript:void(0);">上一页 </a></li>',
+                  next: '<li id="next"><a href="javascript:void(0);">下一页</a></li>',
+                  last: '<li id="last"><a href="javascript:void(0);">尾页</a></li>',
+                  page: '<li class="page"><a href="javascript:void(0);">{{page}}</a></li>',
+              });
+            },
+
+            //获取数据并根据结果配置分页
+            getData: function() {
+              var _this = this;
+              this.nova = this.totaldata.slice((this.query.pageIndex -1) * jqPageSize, this.query.pageIndex * jqPageSize)
+
+              //核心配置在此部，根据后台返回数据控制分页器该如何显示
+              //想要完全掌握这个分页器，你可以研究下jgPaginator.js源码，很容易修改。
+              $('#jqPager').jqPaginator('option', {
+                  totalCounts: _this.totalCount,//后台返回数据总数
+                  pageSize: jqPageSize, //每一页显示多少条内容
+                  currentPage: _this.query.pageIndex, //现在的页码
+                  visiblePages: 20, //最多显示几页
+
+                  //翻页时触发的事件
+                  onPageChange: function(num) {
+                      //app.query.pageIndex = num;
+                      _this.pageChangeEvent(num);//调用翻页事件
+                  }
+              });
+            },
+            //翻页或者跳页事件
+            pageChangeEvent: function(pageIndex) {
+              this.query.pageIndex = Number(pageIndex);
+              this.getData();
+            },
+
+            //跳页-选用功能，可有可无
+            pageSkip: function() {      
+              var maxPage = 1;//默认可以跳的最大页码                    
+              var targetPage = document.getElementById("jumpPageIndex").value;//目的页面                  
+              if(!targetPage) {
+                  alert("请输入页码");
+                  return;
+              }
+
+              //计算最大可跳页数
+              maxPage = Math.floor(this.totalCount / this.query.pageSize);                    
+              if(maxPage<1){
+                  maxPage=1;
+              }
+
+              if(targetPage > maxPage) {
+                  alert('超过最大页数了，当前最大页数是' + maxPage);
+                  return;
+              }
+              this.pageChangeEvent(targetPage);
+            }
+        },          
         mounted: function(){
-          this.$nextTick(function(){$("#uipg-video-player").jsVideoPlayer({showTitle: false,playerHeight:450});
+          var _this = this;
+          this.initPager();
+            setTimeout(function() {
+                _this.getData();
+          }, 50);
+          // this.$nextTick(function(){$("#uipg-video-player").jsVideoPlayer({showTitle: false,playerHeight:450});
           $('#chart').hide();
           Papa.parse('./perf.csv', {
             download: true,
@@ -300,8 +454,8 @@
               }
               fps_Chart.setOption(option, true);
             }
-          })})}})
-    }, function (ret) {
+          });
+}});}, function (ret) {
       // Test data
       new Vue({
         el: '#app',
