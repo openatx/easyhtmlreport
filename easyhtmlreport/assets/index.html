@@ -221,12 +221,13 @@
       // $(".panel-heading").on('click', function() {
       //   $(this).next().toggle();
       // })
-      ret.warning = null;
+      // ret.warning = null;
       var jqPageSize = 90;
       var backData = ret;
       new Vue({
         el: '#app',
         data: {
+          warning: null,
           query: {
               pageIndex: 1,
               pageSize: jqPageSize
