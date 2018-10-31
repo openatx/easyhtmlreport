@@ -11,8 +11,11 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css">
   <link type="text/css" rel="stylesheet" href="css/jquery-image-player-min.css" />
   <style>
-    body {
-      padding-top: 70px;
+    .mycontainer {
+      padding-right: 15px; 
+      padding-left: 15px;
+      margin-left: 150px;
+      margin-right: 150px;
     }
 
     .img-screenshot {
@@ -90,118 +93,304 @@
         line-height: 34px;
         margin-left: 5px;
     }
+    #chart{
+      margin-top: 50px;
+    }
+    .graph{
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+    #header {
+    padding-top: 20px;
+}
+
+#footer,
+#header {
+    background-color: #008B8B;
+    border-top: 1px solid #8DEEEE;
+    color: #fff;
+}
+
+#footer a,
+#header a {
+    color: #eee;
+}
+#footer a{
+    border-bottom: dotted 1px #a9dfbf;
+}
+
+#footer .copy-right {
+    background-color: rgba(51, 51, 51, .08);
+}
+
+#footer .copy-right {
+    height: 50px;
+    line-height: 50px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+#footer .container {
+    padding: 20px;
+}
+
+.navbar-header {
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+}
+
+footer {
+    width: 100%;
+    flex: 0 0 auto;
+}
+
+.row {
+    margin: 20px;
+}
+
+aside {
+    position: fixed;
+    right: 1px;
+    top: 50%;
+    width: 80px;
+    height: 90px;
+    background-color: #1abc9c;
+}
+
+aside a {
+    display: inline-block;
+    height: 33.33%;
+    width: 100%;
+    line-height: 30px;
+    text-align: center;
+    color: #fff;
+    border-top: 1px solid #fff;
+}
+
+#backhead {
+    height: 30px;
+    top: 90%;
+}
+
+#backhead a{
+    border-top: none;
+}
+
+#bs-navbar a:hover{
+    color: fff;
+    text-decoration: underline;
+    background-color: #008B8B;
+}
+#bs-navbar a:visited{
+    background-color: #008B8B;
+    border-bottom: dotted 1px #a9dfbf;
+}
+#footer a:hover{
+    text-decoration: none;
+    border-bottom: solid 1px #a9dfbf;
+}
+
   </style>
 </head>
 
 <body>
-  <nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
-          aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">测试过程记录</a>
+  <header id="header">
+        <nav class="navbar main-navbar navbar-static-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header"><a href="http://appci.nie.netease.com/" target="_blank"><img src="logo.png" style="height: 50px;width: 50px;"></a></div>
+                <nav id="bs-navbar" class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#">API</a></li>
+                        <li><a href="#">教程</a></li>
+                        <li><a href="#about">关于</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12" style="text-align: center;">
+                    <p style="font-size: 56px;"><a href="http://appci.nie.netease.com/" target="_blank">APKCI</a></p>
+                    <p style="margin-bottom: 15px;font-size: 21px;font-weight: 200;">稳定、快速、高效的移动自动化测试解决方案</p>
+                    <div style="height: 38px;"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+        <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+            aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" style="float: none;" href="/">测试过程记录</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a class="navbar-brand" href="./log.txt">游戏log</a></li>
+            <li><a class="navbar-brand" href="./perf.csv">性能数据</a></li>
+            <!-- <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                列表 <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu" role="menu">
+                <li v-for="step in steps">
+                  <a href="#{{step.time}}">{{step.time}} {{step.action}}  {{step.description}}</a>
+                </li>
+              </ul>
+            </li> -->
+          </ul>
+        </div>
       </div>
-      <div id="navbar" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav navbar-right">
-          <li><a class="navbar-brand" href="./log.txt">游戏log</a></li>
-          <li><a class="navbar-brand" href="./perf.csv">性能数据</a></li>
-          <!-- <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-              列表 <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-              <li v-for="step in steps">
-                <a href="#{{step.time}}">{{step.time}} {{step.action}}  {{step.description}}</a>
-              </li>
-            </ul>
-          </li> -->
+    </nav>
+  <div class="mycontainer">
+
+    <div style="display: flex; justify-content: center;">
+      <div style="display: inline-block;">
+        <video src="video.mp4" id="video" controls="controls" style="clear:both;display:block;margin:auto"></video>
+        <div class="btn-group" style="float: right;">
+          <button onclick="setPlaySpeed(1)" type="button" class="btn btn-default" >1倍速</button>
+          <button onclick="setPlaySpeed(2)" type="button" class="btn btn-default">2倍速</button>
+          <button onclick="setPlaySpeed(3)" type="button" class="btn btn-default">3倍速</button>
+          <button onclick="setPlaySpeed(4)" type="button" class="btn btn-default">4倍速</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid" id="app">
+      <!-- <div id="uipg-video-player">
+        <ul>
+          <li data-duration="600" v-for="v, index in steps">
+            <img :src="v.screenshot">
+          </li>
         </ul>
+      </div> -->
+      <div class="row">
+        <div class="col-md-12">
+          <table class="table">
+            <thead><tr>
+              <th>packagename</th>
+              <th>手机型号</th>
+              <th>sdk</th>
+              <th>开始时间</th>
+              <th>运行总时</th>
+              <th>测试步数</th>
+              <th>trace数量</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+              <td>{video_data}</td>
+              <td>{brand} {model}</td>
+              <td>{long}x{short}</td>
+              <td>{hwaddr}</td>
+              <td>{serial}</td>
+              <td>{ip}</td>
+              <td>{ip}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
-  </nav>
-  <div style="display: flex; justify-content: center;">
-    <div style="display: inline-block;">
-      <video src="video.mp4" id="video" controls="controls" style="clear:both;display:block;margin:auto"></video>
-      <div class="btn-group" style="float: right;">
-        <button onclick="setPlaySpeed(1)" type="button" class="btn btn-default" >1倍速</button>
-        <button onclick="setPlaySpeed(2)" type="button" class="btn btn-default">2倍速</button>
-        <button onclick="setPlaySpeed(3)" type="button" class="btn btn-default">3倍速</button>
-        <button onclick="setPlaySpeed(4)" type="button" class="btn btn-default">4倍速</button>
+      <div class="row" id="chart">
+        <div class="col-md-6 col-sm-12 col-lg-6 graph">
+          <div id="pss" style="width:800px;height:450px"></div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-lg-6 graph">
+          <div id="cpu" style="width:800px;height:450px"></div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-lg-6 graph">
+          <div id="systemCpu" style="width:800px;height:450px"></div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-lg-6 graph">
+          <div id="Bytes" style="width:800px;height:450px"></div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-lg-6 graph">
+          <div id="fps" style="width:800px;height:450px"></div>
+        </div>
+        <div class="col-md-6 col-sm-12 col-lg-6 graph">
+          <div style="width:800px;height:450px"></div>
+        </div>
       </div>
-    </div>
-  </div>
+      <div class="row" id="screenshot">
+        <div v-if="warning" class="alert alert-warning alert-dismissible" role="alert">
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <strong>Warning!</strong> {{warning}}
+        </div>
 
-  <div class="container-fluid" id="app">
-    <!-- <div id="uipg-video-player">
-      <ul>
-        <li data-duration="600" v-for="v, index in steps">
-          <img :src="v.screenshot">
-        </li>
-      </ul>
-    </div> -->
-    <div id="chart">
-      <div class="col-md-6 col-sm-12 col-lg-6">
-        <div id="pss" style="width:800px;height:450px"></div>
-      </div>
-      <div class="col-md-6 col-sm-12 col-lg-6">
-        <div id="cpu" style="width:800px;height:450px"></div>
-      </div>
-      <div class="col-md-6 col-sm-12 col-lg-6">
-        <div id="systemCpu" style="width:800px;height:450px"></div>
-      </div>
-      <div class="col-md-6 col-sm-12 col-lg-6">
-        <div id="Bytes" style="width:800px;height:450px"></div>
-      </div>
-      <div class="col-md-6 col-sm-12 col-lg-6">
-        <div id="fps" style="width:800px;height:450px"></div>
-      </div>
-      <div class="col-md-6 col-sm-12 col-lg-6">
-        <div style="width:800px;height:450px"></div>
-      </div>
-    </div>
-    <div class="row">
-      <div v-if="warning" class="alert alert-warning alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <strong>Warning!</strong> {{warning}}
-      </div>
-
-      <div v-for="v, index in nova">
-        <div class="col-md-4">
-          <div style="margin-bottom: 20px; padding: 5px; background-color:aliceblue; position: relative">
-            <div>
-              <b style="color: black;">{{index+1}}</b> {{v.time}}</div>
-            <a :href="v.screenshot" data-fancybox="gallery">
-              <img style="margin-bottom: 5px" class="img-thumbnail img-screenshot" :src="v.screenshot" style="max-height:200px">
-            </a>
-            <pre style="text-overflow: ellipsis; overflow: hidden; font-size: 8px;height: 200px;">{{v.code}}</pre>
+        <div v-for="v, index in nova">
+          <div class="col-md-4">
+            <div style="margin-bottom: 20px; padding: 5px; background-color:aliceblue; position: relative">
+              <div>
+                <b style="color: black;">{{index+1}}</b> {{v.time}}</div>
+              <a :href="v.screenshot" data-fancybox="gallery">
+                <img style="margin-bottom: 5px" class="img-thumbnail img-screenshot" :src="v.screenshot" style="max-height:200px">
+              </a>
+              <pre style="text-overflow: ellipsis; overflow: hidden; font-size: 8px;height: 200px;">{{v.code}}</pre>
+            </div>
           </div>
         </div>
       </div>
+      <div class="jqPager" v-bind:class="{hiddenPager:hiddenPager}">
+          <ul id="jqPager" class="pagination cf"></ul>
+          <!--没有跳页功能可以不要下面的jumpBox-->
+          <div class="jumpBox">
+            <input type="number" class="jumppage" id="jumpPageIndex" />
+              <a href="javascript:;" class="jumpbtn" v-on:click="pageSkip()">跳转</a>
+          </div>
+      </div>
+      <!-- <blockquote class="code-font">
+        <p>Make mobile test automated, free testers from endless work.</p>
+        <footer>Powered by
+          <a href="https://github.com/openatx/uiautomator2">
+            <cite title="Shortcut">atx uiautomator2</cite>
+          </a>
+        </footer>
+      </blockquote> -->
     </div>
-    <div class="jqPager" v-bind:class="{hiddenPager:hiddenPager}">
-        <ul id="jqPager" class="pagination cf"></ul>
-        <!--没有跳页功能可以不要下面的jumpBox-->
-        <div class="jumpBox">
-          <input type="number" class="jumppage" id="jumpPageIndex" />
-            <a href="javascript:;" class="jumpbtn" v-on:click="pageSkip()">跳转</a>
-        </div>
-    </div>
-    <blockquote class="code-font">
-      <p>Make mobile test automated, free testers from endless work.</p>
-      <footer>Powered by
-        <a href="https://github.com/openatx/uiautomator2">
-          <cite title="Shortcut">atx uiautomator2</cite>
-        </a>
-      </footer>
-    </blockquote>
   </div>
+  <footer id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="footer-about col-md-4 col-sm-12" id="about">
+                    <h4>关于APPCI</h4>
+                    <p>稳定、快速、高效的移动自动化测试解决方案</p>
+                </div>
+                <div class="footer-links col-md-4 col-sm-12">
+                    <h4>友情链接</h4>
+                    <ul class="list-unstyled list-inline">
+                        <li><a href="http://test.nie.netease.com" target="_blank">TestEase</a></li>
+                        <li><a href="http://fit.nie.netease.com" target="_blank">FIT</a></li>
+                        <li><a href="http://test.nie.netease.com/home/#/admin/projects_home/pid/60" target="_blank">H38 魔法禁书目录</a></li>
+                        <li><a href="http://test.nie.netease.com/home/#/admin/projects_home/pid/289" target="_blank">H52 非人日常</a></li>
+                    </ul>
+                </div>
+                <div class="footer-techs col-md-4 col-sm-12">
+                    <h4>我们用到的技术</h4>
+                    <ul class="list-unstyled list-inline">
+                        <li><a href="http://www.python.org" target="_blank">Python</a></li>
+                        <li><a href="https://jenkins.io/" target="_blank">Jenkins</a></li>
+                        <li>
+                            <a href="https://github.com/openatx/uiautomator2" target="_blank">Uiautomator2</a></li>
+                        <li><a href="http://www.tornadoweb.org" target="_blank">Tornado</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="copy-right "><span>Copyright © 2018 Netease. All Rights Reserved. </span><span>&nbsp&nbsp&nbsp&nbsp&nbsp</span>
+            <span>接入联系:hzsunshx@corp.netease.com</span></div>
+    </footer>
+    <aside><a href="#important ">重要信息</a><a href="#screenshot ">游戏截图</a><a href="#chart">性能图表</a></aside>
+    <aside id="backhead"><p><a href="# ">回到顶部</a></p></aside>
 </body>
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui.min.js"></script>
@@ -212,8 +401,12 @@
 <script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
 <script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/vue/2.3.2/vue.min.js"></script>
-<script src="jqpaginator.min.js"></script>
+<script src="js/jqpaginator.min.js"></script>
 <script>
+  var data;
+  $.getJSON("info.json").then(function(ret){
+    console.log(ret);
+  })
   $.getJSON("record.json")
     .then(function (ret) {
       // console.log(ret)
@@ -224,6 +417,7 @@
       // ret.warning = null;
       var jqPageSize = 90;
       var backData = ret;
+      $.getJSON("info.json").then(function(ret){
       new Vue({
         el: '#app',
         data: {
@@ -302,6 +496,9 @@
             }
         },          
         mounted: function(){
+          $.getJSON("info.json").then(function(ret){
+              console.log(ret);
+          })
           var _this = this;
           this.initPager();
             setTimeout(function() {
@@ -312,22 +509,31 @@
           Papa.parse('./perf.csv', {
             download: true,
             complete: function(results) {
+              results = results.data;
               $('#chart').show();
               var xAisdata = [];
+              var xAisdataindex = results[0].indexOf('time');
+              console.log(xAisdataindex);
               var pss = [];
+              var pssindex = results[0].indexOf('pss');
               var cpu = [];
+              var cpuindex = results[0].indexOf('cpu');
               var systemCpu = [];
+              var systemCpuindex = results[0].indexOf('systemCpu');
               var rxBytes = [];
+              var rxBytesindex = results[0].indexOf('txBytes');
               var txBytes = [];
+              var txBytesindex = results[0].indexOf('txBytes');
               var fps = [];
-              for (var i=1,_l=results.data.length-1;i<_l;i++){
-                xAisdata.push(convertDateFromString(results.data[i][0]))
-                pss.push(results.data[i][2])
-                cpu.push(results.data[i][3])
-                systemCpu.push(results.data[i][4])
-                rxBytes.push(results.data[i][5])
-                txBytes.push(results.data[i][6])
-                fps.push(results.data[i][7])
+              var fpsindex = results[0].indexOf('fps');
+              for (var i=1,_l=results.length-1;i<_l;i++){
+                xAisdata.push(convertDateFromString(results[i][xAisdataindex]))
+                pss.push(results[i][pssindex])
+                cpu.push(results[i][cpuindex])
+                systemCpu.push(results[i][systemCpuindex])
+                rxBytes.push(results[i][rxBytesindex])
+                txBytes.push(results[i][txBytesindex])
+                fps.push(results[i][fpsindex])
               }
               var pss_Chart = echarts.init(document.getElementById('pss'));
               var option = {
@@ -456,7 +662,9 @@
               fps_Chart.setOption(option, true);
             }
           });
-}});}, function (ret) {
+}});
+          })
+}, function (ret) {
       // Test data
       new Vue({
         el: '#app',
