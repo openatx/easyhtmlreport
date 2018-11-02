@@ -100,9 +100,6 @@
       padding-top: 30px;
       padding-bottom: 30px;
     }
-    #header {
-    padding-top: 20px;
-}
 
 #footer,
 #header {
@@ -156,13 +153,13 @@ aside {
     right: 1px;
     top: 50%;
     width: 80px;
-    height: 90px;
+    height: 120px;
     background-color: #1abc9c;
 }
 
 aside a {
     display: inline-block;
-    height: 33.33%;
+    height: 25%;
     width: 100%;
     line-height: 30px;
     text-align: center;
@@ -192,8 +189,11 @@ aside a {
     text-decoration: none;
     border-bottom: solid 1px #a9dfbf;
 }
+.navbar{
+  margin-bottom: 0px;
+}
 
-  </style>
+</style>
 </head>
 
 <body>
@@ -211,13 +211,12 @@ aside a {
             </div>
         </nav>
         <div class="container">
-            <div class="row">
+            <!-- <div class="row"> -->
                 <div class="col-sm-12" style="text-align: center;">
-                    <p style="font-size: 56px;"><a href="http://appci.nie.netease.com/" target="_blank">APKCI</a></p>
-                    <p style="margin-bottom: 15px;font-size: 21px;font-weight: 200;">稳定、快速、高效的移动自动化测试解决方案</p>
-                    <div style="height: 38px;"></div>
+                    <p style="font-size: 36px;margin-bottom: 0px;"><a href="http://appci.nie.netease.com/" target="_blank">APKCI</a></p>
+                    <p style="font-size: 16px;font-weight: 200;">稳定、快速、高效的移动自动化测试解决方案</p>
                 </div>
-            </div>
+            <!-- </div> -->
         </div>
     </header>
         <nav class="navbar navbar-default">
@@ -251,19 +250,16 @@ aside a {
       </div>
     </nav>
   <div class="mycontainer">
-
-    <div style="display: flex; justify-content: center;">
+    <div style="display: flex; justify-content: center;margin-top: 30px;">
       <div style="display: inline-block;">
-        <video src="video.mp4" id="video" controls="controls" style="clear:both;display:block;margin:auto"></video>
-        <div class="btn-group" style="float: right;">
-          <button onclick="setPlaySpeed(1)" type="button" class="btn btn-default" >1倍速</button>
-          <button onclick="setPlaySpeed(2)" type="button" class="btn btn-default">2倍速</button>
-          <button onclick="setPlaySpeed(3)" type="button" class="btn btn-default">3倍速</button>
-          <button onclick="setPlaySpeed(4)" type="button" class="btn btn-default">4倍速</button>
-        </div>
+        <video src="test.mp4" id="video" controls style="clear:both;display:block;margin:auto"></video>
+          <br>
+          <input style="width:50px" type="number" name="speed"/><label>倍</label>
+          <button onclick="setPlaySpeed()" type="button" class="btn btn-default">播放速度</button>
+          <input style="width:50px" type="number" name="currentTime"/><label>秒</label>
+          <button onclick="setCurrentTime()" type="button" class="btn btn-default">播放位置</button>
       </div>
     </div>
-
     <div class="container-fluid" id="app">
       <!-- <div id="uipg-video-player">
         <ul>
@@ -273,33 +269,47 @@ aside a {
         </ul>
       </div> -->
       <div class="row">
+<!--         <div class="page-header">
+          <h3>结果总览</h3>
+        </div> -->
         <div class="col-md-12">
           <table class="table">
             <thead><tr>
-              <th>packagename</th>
+              <th>Packagename</th>
               <th>手机型号</th>
-              <th>sdk</th>
+              <th>SDK版本</th>
               <th>开始时间</th>
               <th>运行总时</th>
               <th>测试步数</th>
-              <th>trace数量</th>
+              <th>Trace数量</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-              <td>{video_data}</td>
-              <td>{brand} {model}</td>
-              <td>{long}x{short}</td>
-              <td>{hwaddr}</td>
-              <td>{serial}</td>
-              <td>{ip}</td>
-              <td>{ip}</td>
+              <td>{{info.basic_info.app}}</td>
+              <td>{{info.basic_info.device_info.brand}} {{info.basic_info.device_info.model}}</td>
+              <td>{{info.basic_info.device_info.sdk}}</td>
+              <td>{{info.record_info.start_time}}</td>
+              <td>{{info.record_info.total_time}}</td>
+              <td>{{info.record_info.steps}}</td>
+              <td>{{info.trace_info.trace_count}}</td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
+      <div class="row" id="trace">
+        <div class="page-header">
+          <h3>Trace 信息</h3>
+        </div>
+        <div v-for="tarce in info.trace_info.trace_list">
+          <pre>{{tarce}}</pre>
+        </div>
+      </div>
       <div class="row" id="chart">
+        <div class="page-header">
+          <h3>性能图表</h3>
+        </div>
         <div class="col-md-6 col-sm-12 col-lg-6 graph">
           <div id="pss" style="width:800px;height:450px"></div>
         </div>
@@ -307,19 +317,16 @@ aside a {
           <div id="cpu" style="width:800px;height:450px"></div>
         </div>
         <div class="col-md-6 col-sm-12 col-lg-6 graph">
-          <div id="systemCpu" style="width:800px;height:450px"></div>
-        </div>
-        <div class="col-md-6 col-sm-12 col-lg-6 graph">
           <div id="Bytes" style="width:800px;height:450px"></div>
         </div>
         <div class="col-md-6 col-sm-12 col-lg-6 graph">
           <div id="fps" style="width:800px;height:450px"></div>
         </div>
-        <div class="col-md-6 col-sm-12 col-lg-6 graph">
-          <div style="width:800px;height:450px"></div>
-        </div>
       </div>
       <div class="row" id="screenshot">
+        <div class="page-header">
+          <h3>游戏截图</h3>
+        </div>
         <div v-if="warning" class="alert alert-warning alert-dismissible" role="alert">
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
@@ -389,7 +396,12 @@ aside a {
         <div class="copy-right "><span>Copyright © 2018 Netease. All Rights Reserved. </span><span>&nbsp&nbsp&nbsp&nbsp&nbsp</span>
             <span>接入联系:hzsunshx@corp.netease.com</span></div>
     </footer>
-    <aside><a href="#important ">重要信息</a><a href="#screenshot ">游戏截图</a><a href="#chart">性能图表</a></aside>
+    <aside>
+      <a href="#video ">视频</a>
+      <a href="#trace">Trace信息</a>
+      <a href="#chart">性能图表</a>
+      <a href="#screenshot ">游戏截图</a>
+    </aside>
     <aside id="backhead"><p><a href="# ">回到顶部</a></p></aside>
 </body>
 <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
@@ -402,11 +414,8 @@ aside a {
 <script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/vue/2.3.2/vue.min.js"></script>
 <script src="js/jqpaginator.min.js"></script>
+<script src="js/flv.min.js"></script>
 <script>
-  var data;
-  $.getJSON("info.json").then(function(ret){
-    console.log(ret);
-  })
   $.getJSON("record.json")
     .then(function (ret) {
       // console.log(ret)
@@ -429,7 +438,8 @@ aside a {
           totaldata: backData.steps,
           nova: [],
           hiddenPager: false,
-          totalCount: backData.steps.length
+          totalCount: backData.steps.length,
+          info: ret
         },
         computed: {},
         methods: {
@@ -496,9 +506,6 @@ aside a {
             }
         },          
         mounted: function(){
-          $.getJSON("info.json").then(function(ret){
-              console.log(ret);
-          })
           var _this = this;
           this.initPager();
             setTimeout(function() {
@@ -513,7 +520,6 @@ aside a {
               $('#chart').show();
               var xAisdata = [];
               var xAisdataindex = results[0].indexOf('time');
-              console.log(xAisdataindex);
               var pss = [];
               var pssindex = results[0].indexOf('pss');
               var cpu = [];
@@ -523,7 +529,11 @@ aside a {
               var rxBytes = [];
               var rxBytesindex = results[0].indexOf('txBytes');
               var txBytes = [];
-              var txBytesindex = results[0].indexOf('txBytes');
+              var txBytesindex = results[0].indexOf('rxBytes');
+              var rxTcpBytes = [];
+              var rxTcpBytesindex = results[0].indexOf('rxTcpBytes');
+              var txTcpBytes = [];
+              var txTcpBytesindex = results[0].indexOf('txTcpBytes');
               var fps = [];
               var fpsindex = results[0].indexOf('fps');
               for (var i=1,_l=results.length-1;i<_l;i++){
@@ -533,6 +543,8 @@ aside a {
                 systemCpu.push(results[i][systemCpuindex])
                 rxBytes.push(results[i][rxBytesindex])
                 txBytes.push(results[i][txBytesindex])
+                rxTcpBytes.push(results[i][rxTcpBytesindex])
+                txTcpBytes.push(results[i][txTcpBytesindex])
                 fps.push(results[i][fpsindex])
               }
               var pss_Chart = echarts.init(document.getElementById('pss'));
@@ -558,39 +570,19 @@ aside a {
                 type: 'line'}]
               }
               pss_Chart.setOption(option, true);
-              var cpu_Chart = echarts.init(document.getElementById('cpu'));
-              var option = {  
-                title: {
-                  text: "cpu"
-                },
-                animation: false,
-                dataZoom: [{
-                type: "slider",
-                  xAxisIndex: [0]
-                }],
-                xAxis: {
-                  type: 'category',
-                  data: xAisdata,
-                  name: "时间"
-                },
-                yAxis:{
-                  type: 'value',
-                  name: '%'
-                },
-                series: [{data:cpu,
-                  type: 'line'}]
-              }
-              cpu_Chart.setOption(option, true);
-              var systemCpu_Chart = echarts.init(document.getElementById('systemCpu'));
+              var systemCpu_Chart = echarts.init(document.getElementById('cpu'));
               var option = {
                 title: {
-                text: "systemCpu"
+                text: "Cpu"
                 },
                 animation: false,
                 dataZoom: [{
                   type: "slider",
                   xAxisIndex: [0]
                 }],
+                legend: {
+                  data: ["cpu", "systemCpu"]
+                },
                 xAxis: {
                   type: 'category',
                   data: xAisdata,
@@ -600,8 +592,16 @@ aside a {
                   type: 'value',
                   name: '%'
                 },
-                series: [{data:systemCpu,
-                  type: 'line'}]
+                series: [{
+                  data:cpu,
+                  name: "cpu",
+                  type: 'line'
+                },
+                {
+                  data:systemCpu,
+                  name: "systemCpu",
+                  type: 'line'
+                }]
               }
               systemCpu_Chart.setOption(option, true);
               var Bytes_Chart = echarts.init(document.getElementById('Bytes'));
@@ -615,7 +615,7 @@ aside a {
                   xAxisIndex: [0]
                 }],
                 legend: {
-                  data: ["rxBytes", "txBytes"]
+                  data: ["rxBytes", "txBytes", "rxTcpBytes", "txTcpBytes"]
                 },
                 xAxis: {
                   type: 'category',
@@ -634,6 +634,16 @@ aside a {
                 {
                   data:txBytes,
                   name:"txBytes",
+                  type:'line'
+                },
+                {
+                  data:rxTcpBytes,
+                  name:"rxTcpBytes",
+                  type:'line'
+                },
+                {
+                  data:txTcpBytes,
+                  name:"txTcpBytes",
                   type:'line'
                 }]
               }
@@ -682,9 +692,18 @@ aside a {
       })
     });
     var video = document.getElementById("video");
-    function setPlaySpeed(speed){
-        video.playbackRate=speed;
+    function setPlaySpeed(){
+      var speed = document.getElementsByName('speed')[0];
+      video.playbackRate = parseFloat(speed.value);
+      // alert(video.playbackRate);
     };
+    function setCurrentTime(){
+        var currentTime = document.getElementsByName('currentTime')[0];
+        console.log(currentTime.value);
+        video.currentTime = parseInt(currentTime.value);
+        alert(video.currentTime);
+
+    }
     function convertDateFromString(dateString) { 
 		if (dateString) { 
 			var arr1 = dateString.split(" "); 
