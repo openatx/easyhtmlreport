@@ -252,7 +252,7 @@ aside a {
   <div class="mycontainer">
     <div style="display: flex; justify-content: center;margin-top: 30px;">
       <div style="display: inline-block;">
-        <video src="test.mp4" id="video" controls style="clear:both;display:block;margin:auto"></video>
+        <video src="video.mp4" id="video" controls style="clear:both;display:block;margin:auto"></video>
           <br>
           <input style="width:50px" type="number" name="speed"/><label>倍</label>
           <button onclick="setPlaySpeed()" type="button" class="btn btn-default">播放速度</button>
@@ -414,7 +414,6 @@ aside a {
 <script src="https://cdn.jsdelivr.net/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/vue/2.3.2/vue.min.js"></script>
 <script src="js/jqpaginator.min.js"></script>
-<script src="js/flv.min.js"></script>
 <script>
   $.getJSON("record.json")
     .then(function (ret) {
